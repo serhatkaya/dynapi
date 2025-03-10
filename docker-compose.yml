@@ -1,0 +1,37 @@
+services:
+  api:
+    build: .
+    ports:
+      - '5000:5000'
+      - '50051:50051'
+    environment:
+      - PORT=5000
+      - MONGODB_URI=mongodb://admin:localpw@mongodb:27017/
+      - JWT_SECRET=your_jwt_secret_key_here
+      - NODE_ENV=development
+      - GRPC_PORT=50051
+    depends_on:
+      - mongodb
+    networks:
+      - dynapi-network
+    restart: unless-stopped
+
+  mongodb:
+    image: mongo:6
+    ports:
+      - '27017:27017'
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=localpw
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - dynapi-network
+    restart: unless-stopped
+
+networks:
+  dynapi-network:
+    driver: bridge
+
+volumes:
+  mongodb_data:

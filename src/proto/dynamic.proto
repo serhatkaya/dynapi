@@ -1,0 +1,44 @@
+syntax = "proto3";
+
+package dynamic;
+
+service DynamicService {
+  rpc Create (DynamicRequest) returns (DynamicResponse);
+  rpc Read (ReadRequest) returns (DynamicResponse);
+  rpc Update (DynamicRequest) returns (DynamicResponse);
+  rpc Delete (DeleteRequest) returns (DynamicResponse);
+  rpc List (ListRequest) returns (ListResponse);
+}
+
+message DynamicRequest {
+  string collection = 1;
+  string data = 2;
+  optional string id = 3;
+}
+
+message ReadRequest {
+  string collection = 1;
+  string id = 2;
+}
+
+message DeleteRequest {
+  string collection = 1;
+  string id = 2;
+}
+
+message ListRequest {
+  string collection = 1;
+  optional string filter = 2;
+}
+
+message DynamicResponse {
+  bool success = 1;
+  string message = 2;
+  optional string data = 3;
+}
+
+message ListResponse {
+  bool success = 1;
+  string message = 2;
+  repeated string items = 3;
+} 
